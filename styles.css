@@ -29,26 +29,26 @@ img {
 }
 
 :root {
-    --space-s: 1em;
-    --space-xs: 0.5em;
+    --space-s: 2em;
+    --space-xs: 1em;
 
     --hue: 220;
 }
-header {
+header, footer {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
-
-    position: sticky;
-    top: var(--space-s);
-    margin: var(--space-s);
     padding: var(--space-s);
 
-    background: black;    
+    background: black;
+}
+header {
+    position: sticky;
+    top: var(--space-xs);
 }
 .nav, .logo {
     display: flex;
 }
-.nav--right {
+.right {
     justify-content: end;
 }
 
@@ -61,7 +61,7 @@ main {
 .filter-toolbar {
     display: flex;
     width: fit-content;
-    margin: var(--space-s) auto;
+    margin: 0 auto;
 
     
     padding: var(--space-xs);
