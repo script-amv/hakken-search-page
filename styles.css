@@ -27,13 +27,33 @@ img {
     width: 1em;
     background: red;
 }
-
 :root {
     --space-s: 2em;
     --space-xs: 1em;
+    --space-m: 5em;
 
     --hue: 220;
 }
+
+
+
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-m);
+}
+main, header {
+    width: min(60em, 100%);
+}
+footer {
+    width: 100%;
+}
+
+
+
+
 header, footer {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
@@ -44,25 +64,21 @@ header, footer {
 header {
     position: sticky;
     top: var(--space-xs);
-}
-.nav, .logo {
-    display: flex;
+    margin-bottom: var(--space-xs);
 }
 .right {
     justify-content: end;
 }
-
-
-main {
-    max-width: min(60em, 100%);
-    margin-inline: auto;
+.nav, .logo, .filter-toolbar {
+    display: flex;
 }
 
+
+
+
 .filter-toolbar {
-    display: flex;
     width: fit-content;
     margin: 0 auto;
-
     
     padding: var(--space-xs);
     background: black;
@@ -72,7 +88,6 @@ main {
     display: flex;
     flex-wrap: wrap;
 }
-
 .anime-card {
     position: relative;
     display: flex;
