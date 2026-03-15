@@ -7,9 +7,13 @@
     list-style: none;
     color: inherit;
 }
-button {
+button, input {
     all: unset;
     box-sizing: border-box;
+    field-sizing: content;
+}
+input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
 }
 img {
     /* TODO: replace with real image sizing */
@@ -31,6 +35,8 @@ html {
     background-attachment: fixed;
 
 
+    --space-xxxs: 0.25em;
+    --space-xxs: 0.5em;
     --space-xs: 1em;
     --space-s: 2em;
     --space-m: 5em;
@@ -93,12 +99,60 @@ main {
 .filter-toolbar {
     display: flex;
     align-items: center;
-    gap: var(--space-xs);
 
     width: fit-content;
     margin: 0 auto; 
     padding: var(--space-xs);
     background: black;
+}
+.filter {
+    display: flex;
+    align-items: center;
+    height: 2em;
+    border-radius: 9999px;
+    padding: var(--space-xxs);
+    background: red;
+
+    max-width: 0;
+    padding-inline: 0;
+    margin-inline: 0;
+    overflow: hidden;
+    transition: 0.4s cubic-bezier(0.0, 0.5, 0.3, 1.0);
+    transition-behavior: allow-discrete;
+}
+.filter * {
+    transition: inherit;
+    transition-behavior: allow-discrete;
+}
+.label::placeholder, .input::placeholder {
+    color: rgb(255 255 255 / 50%);
+}
+.input {
+    max-width: 0;
+    margin-inline: 0;
+    overflow: hidden;
+}
+
+.filter.filter-toolbar-hover {
+    max-width: 5ch;
+    padding-inline: var(--space-xxs);
+    margin-left: var(--space-xxs);
+}
+.label.filter-hover::placeholder {
+    color: white;
+}
+
+.filter.chosen {
+    max-width: fit-content;
+    padding-inline: var(--space-xxs);
+    margin-left: var(--space-xxs);
+}
+.input.filter-hover {
+    max-width: 5ch;
+    margin-left: var(--space-xxxs);
+}
+.input.hover::placeholder {
+    color: white;
 }
 
 .results-grid {
