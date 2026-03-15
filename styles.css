@@ -95,66 +95,64 @@ main {
 }
 
 
-/* ── Main: Filter toolbar & Results grid ── */
-.filter-toolbar {
+/* ── Main: Filter toolbar -- */
+.toolbar {
     display: flex;
     align-items: center;
 
     width: fit-content;
     margin: 0 auto; 
-    padding: var(--space-xs);
     background: black;
+    padding: var(--space-xxxs);
 }
-.filter {
-    display: flex;
-    align-items: center;
-    height: 2em;
+/* ── Filter toolbar: Filter pills collapse behaviour -- */
+.filter-pill, .inner-pill.chosen {
+    display: grid;
+    grid-template-columns: 0fr;
+    transition: 0.3s ease;
     border-radius: 9999px;
-    padding: var(--space-xxs);
-    background: red;
-
-    max-width: 0;
-    padding-inline: 0;
-    margin-inline: 0;
-    overflow: hidden;
-    transition: 0.4s cubic-bezier(0.0, 0.5, 0.3, 1.0);
-    transition-behavior: allow-discrete;
 }
-.filter * {
+.filter-pill * {
     transition: inherit;
     transition-behavior: allow-discrete;
 }
-.label::placeholder, .input::placeholder {
-    color: rgb(255 255 255 / 50%);
-}
-.input {
-    max-width: 0;
-    margin-inline: 0;
+.filter-content, .inner-content {
+    display: inline-flex;
+    align-items: center;
     overflow: hidden;
 }
-
-.filter.filter-toolbar-hover {
-    max-width: 5ch;
-    padding-inline: var(--space-xxs);
-    margin-left: var(--space-xxs);
+.filter-pill.toolbar-hover,
+.filter-pill.chosen,
+.inner-pill.chosen.filter-hover,
+.inner-pill {
+    grid-template-columns: 1fr;
 }
-.label.filter-hover::placeholder {
-    color: white;
+/* ── Filter toolbar: Dynamic Filter pills space (padding, margin) -- */
+.filter-pill {
+    padding-block: var(--space-xxs);
 }
-
-.filter.chosen {
-    max-width: fit-content;
-    padding-inline: var(--space-xxs);
-    margin-left: var(--space-xxs);
+.filter-pill.toolbar-hover,
+.filter-pill.chosen {
+    padding: var(--space-xxs);
+    margin: var(--space-xxxs);
 }
 .input.filter-hover {
-    max-width: 5ch;
     margin-left: var(--space-xxxs);
 }
-.input.hover::placeholder {
+/* ── Filter toolbar: Dynamic styling -- */
+input::placeholder {
+    color: rgb(255 255 255 / 50%);
+    transition: inherit
+}
+.input:hover::placeholder, .label.filter-hover::placeholder {
     color: white;
 }
+.filter-pill {
+    /* TODO */
+    background: hsl(var(--hue) 50% 10%);
+}
 
+/* ── Main: Results grid -- */
 .results-grid {
     width: 100%;
     display: grid;

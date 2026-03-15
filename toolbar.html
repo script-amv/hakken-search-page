@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  body {
+    background: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+  }
+button, input {
+    all: unset;
+    box-sizing: border-box;
+    field-sizing: content;
+}
+input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+  .filter-toolbar {
+    display: flex;
+    gap: 6px;
+  }
+
+  /* ── grid wrapper collapses unchosen to zero width ── */
+  .filter-wrapper {
+    display: grid;
+    grid-template-columns: 0fr;
+    transition: grid-template-columns 0.3s ease;
+  }
+  .filter-wrapper:has(.chosen),
+  .filter-toolbar-hover .filter-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .filter {
+    display: inline-flex;
+    align-items: center;
+    height: 28px;
+    border-radius: 999px;
+    border: 0.5px solid transparent;
+    padding: 0 10px;
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    transition: border-color 0.2s, background 0.2s, opacity 0.2s;
+  }
+
+  /* ── unchosen ── */
+  .filter:not(.chosen)                                    { opacity: 0; transition: opacity 0.2s; }
+  .filter-toolbar-hover .filter:not(.chosen)              { opacity: 1; border-color: rgba(255,255,255,0.1); }
+  .filter-toolbar-hover .filter:not(.chosen).filter-hover { background: rgba(255,255,255,0.05); }
+
+  .filter:not(.chosen) .value                             { display: none; }
+  .filter:not(.chosen) .filter-divider                    { display: none; }
+  .filter:not(.chosen) .filter-expandable                 { grid-template-columns: 1fr; }
+
+  .filter:not(.chosen) .label                             { color: rgba(255,255,255,0.3); }
+  .filter:not(.chosen).filter-hover .label                { color: rgba(255,255,255,0.9); }
+
+  /* ── chosen ── */
+  .filter.chosen                                          { border-color: rgba(255,255,255,0.12); }
+  .filter.chosen.filter-hover                             { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.05); }
+  .filter.chosen .value                                   { color: rgba(255,255,255,0.9); font-weight: 500; }
+
+  /* ── expandable (chosen input) ── */
+  .filter-expandable                                      { display: grid; grid-template-columns: 0fr; transition: grid-template-columns 0.3s ease; }
+  .filter.chosen.filter-hover .filter-expandable,
+  .filter:focus-within .filter-expandable                 { grid-template-columns: 1fr; }
+  .filter-expandable-inner                                { overflow: hidden; display: flex; align-items: center; }
+
+  .filter-divider                                         { width: 1px; height: 12px; background: rgba(255,255,255,0.15); margin: 0 8px; opacity: 0; transition: opacity 0.2s; flex-shrink: 0; }
+  .filter.chosen.filter-hover .filter-divider,
+  .filter:focus-within .filter-divider                    { opacity: 1; }
+
+  /* ── inputs ── */
+  .filter .input, .filter .label                          { border: none; outline: none; background: transparent; font-size: 13px; font-family: inherit; padding: 0; width: fit-content; }
+  .filter.chosen .input                                   { color: rgba(255,255,255,0.35); transition: color 0.15s; }
+  .filter.chosen .input.hover,
+  .filter.chosen .input:focus                             { color: rgba(255,255,255,0.9); }
+  .filter .input::placeholder,
+  .filter .label::placeholder                             { color: inherit; }
+</style>
+</head>
+<body>
+
+<div class="filter-toolbar">
+
+  <div class="filter-wrapper">
+    <div class="filter">
+      <span class="value">Action</span>
+      <div class="filter-expandable"><div class="filter-expandable-inner">
+        <span class="filter-divider"></span>
+        <input class="label" type="search" placeholder="Genre">
+      </div></div>
+    </div>
+  </div>
+
+  <div class="filter-wrapper">
+    <div class="filter">
+      <span class="value">2024</span>
+      <div class="filter-expandable"><div class="filter-expandable-inner">
+        <span class="filter-divider"></span>
+        <input class="label" type="search" placeholder="Year">
+      </div></div>
+    </div>
+  </div>
+
+  <div class="filter-wrapper">
+    <div class="filter">
+      <span class="value"></span>
+      <div class="filter-expandable"><div class="filter-expandable-inner">
+        <span class="filter-divider"></span>
+        <input class="label" type="search" placeholder="Director">
+      </div></div>
+    </div>
+  </div>
+
+  <div class="filter-wrapper">
+    <div class="filter">
+      <span class="value"></span>
+      <div class="filter-expandable"><div class="filter-expandable-inner">
+        <span class="filter-divider"></span>
+        <input class="label" type="search" placeholder="Country">
+      </div></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+    const toolbar = document.querySelector('.filter-toolbar');
+    toolbar.addEventListener('mouseenter', () => toolbar.querySelectorAll('*').forEach(el => el.classList.add('toolbar-hover')));
+    toolbar.addEventListener('mouseleave', () => toolbar.querySelectorAll('*').forEach(el => el.classList.remove('toolbar-hover')));
+
+    document.querySelectorAll('.filter-pill').forEach(pill => {
+        if (pill.querySelector('.value')?.textContent.trim()) {
+            pill.querySelectorAll('*').forEach(el => el.classList.add('chosen'));
+            pill.querySelectorAll('.label').forEach(el => el.classList.replace('label', 'input'));
+        }
+
+        pill.addEventListener('mouseenter', () => pill.querySelectorAll('*').forEach(el => el.classList.add('filter-hover')));
+        pill.addEventListener('mouseleave', () => pill.querySelectorAll('*').forEach(el => el.classList.remove('filter-hover')));
+    });
+</script>
+
+</body>
+</html>

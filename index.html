@@ -25,29 +25,25 @@
         </nav>
     </header>
     <main>
-        <form class="filter-toolbar">
-            <div class="search">
-                <img class="icon">
-                <input class="input" type="search" placeholder="Search">
+        <form class="toolbar">
+            <div class="filter-pill">
+                <div class="filter-content">
+                    <span class="value">Action</span>
+                    <div class="inner-pill"><div class="inner-content">
+                        <input class="label" type="search" placeholder="Genre">
+                    </div></div>
+                </div>
             </div>
-
-            <div class="filter">
-                <span class="value">Action</span>
-                <input class="label" type="search" placeholder="Genre">
-            </div>
-            <div class="filter">
-                <span class="value"></span>
-                <input class="label" type="search" placeholder="Year">
-            </div>
-            
-            <div class="view-controls">
-                <button class="view-control">
-                    <img class="icon">
-                    <span class="label">Layout</span>
+            <div class="filter-pill">
+                <div class="filter-content">
                     <span class="value"></span>
-                </button>
+                    <div class="inner-pill"><div class="inner-content">
+                        <input class="label" type="search" placeholder="Year">
+                    </div></div>
+                </div>
             </div>
         </form>
+        
         <ol class="results-grid">
             <li class="anime-card">
                 <img class="anime-card__cover" src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx182255-butzrqd4I0aC.jpg">
@@ -68,47 +64,18 @@
         </nav>
     </footer>
     <script>
-        const toolbar = document.querySelector('.filter-toolbar');
-        const filters = document.querySelectorAll('.filter');
+        const toolbar = document.querySelector('.toolbar');
+        toolbar.addEventListener('mouseenter', () => [toolbar, ...toolbar.querySelectorAll('*')].forEach(el => el.classList.add('toolbar-hover')));
+        toolbar.addEventListener('mouseleave', () => [toolbar, ...toolbar.querySelectorAll('*')].forEach(el => el.classList.remove('toolbar-hover')));
 
-        // toolbar hover
-        toolbar.addEventListener('mouseenter', () => {
-            toolbar.querySelectorAll('*').forEach(el => el.classList.add('filter-toolbar-hover'));
-            toolbar.classList.add('filter-toolbar-hover');
-        });
-        toolbar.addEventListener('mouseleave', () => {
-            toolbar.querySelectorAll('*').forEach(el => el.classList.remove('filter-toolbar-hover'));
-            toolbar.classList.remove('filter-toolbar-hover');
-        });
-
-        filters.forEach(filter => {
-            // chosen state
-            const value = filter.querySelector('.value');
-            if (value?.textContent.trim()) {
-                filter.classList.add('chosen');
-                filter.querySelectorAll('*').forEach(el => el.classList.add('chosen'));
-                
-                filter.querySelectorAll('.label').forEach(el => {
-                    el.classList.remove('label');
-                    el.classList.add('input');
-                });
+        document.querySelectorAll('.filter-pill').forEach(pill => {
+            if (pill.querySelector('.value')?.textContent.trim()) {
+                [pill, ...pill.querySelectorAll('*')].forEach(el => el.classList.add('chosen'));
+                pill.querySelectorAll('.label').forEach(el => el.classList.replace('label', 'input'));
             }
 
-            // filter hover
-            filter.addEventListener('mouseenter', () => {
-                filter.classList.add('filter-hover');
-                filter.querySelectorAll('*').forEach(el => el.classList.add('filter-hover'));
-            });
-            filter.addEventListener('mouseleave', () => {
-                filter.classList.remove('filter-hover');
-                filter.querySelectorAll('*').forEach(el => el.classList.remove('filter-hover'));
-            });
-
-            // individual child hover
-            filter.querySelectorAll(':scope > *').forEach(child => {
-                child.addEventListener('mouseenter', () => child.classList.add('hover'));
-                child.addEventListener('mouseleave', () => child.classList.remove('hover'));
-            });
+            pill.addEventListener('mouseenter', () => [pill, ...pill.querySelectorAll('*')].forEach(el => el.classList.add('filter-hover')));
+            pill.addEventListener('mouseleave', () => [pill, ...pill.querySelectorAll('*')].forEach(el => el.classList.remove('filter-hover')));
         });
     </script>
 </body>
