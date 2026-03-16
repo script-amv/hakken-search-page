@@ -28,10 +28,10 @@ img {
 
 html {
     color: #eee;
-    line-height: 1cap;
+    line-height: var(--line-height-ui);
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     
-    background: radial-gradient(circle at top left in oklab, hsl(var(--hue) 50% 5%), hsl(0, 0%, 1%));
+    background: radial-gradient(circle at top left in oklab, hsl(var(--hue) 70% 7%), hsl(0, 0%, 2%));
     background-attachment: fixed;
 
 
@@ -45,6 +45,25 @@ html {
 
     --radius-pill: 9999px;
     --radius-reg: 20px;
+    --radius-med: 30px;
+
+    --line-height-ui: 1cap; 
+    --line-height-text: normal;
+
+    --transition: 0.3s ease;
+
+    --blur: 10px;
+    --shadow-inner: inset 0 0 2px 0.5px rgb(255 255 255 / 10%);
+    --shadow-inner-strong: inset 0 0 2px 0.5px rgb(255 255 255 / 20%);
+    --shadow-drop: 0 0 20px rgb(0 0 0 / 10%);
+    --shadow-drop-strong: 0 0 20px rgb(0 0 0 / 20%);
+    --shadow-surface: var(--shadow-inner), var(--shadow-drop);
+    --shadow-card: var(--shadow-inner-strong), var(--shadow-drop-strong);
+
+    --black: black;
+    --balck-alpha: rgb(0 0 0 / 0.6);
+    --white: white;
+    --white-alpha: rgb(255 255 255 / 0.5);
 }
 
 
@@ -73,20 +92,19 @@ header, footer {
     grid-template-columns: 1fr auto 1fr;
     padding: var(--space-s);
 
-    background: hsla(var(--hue), 15%, 7%, 0.7);
-    backdrop-filter: blur(7px);
+    background: var(--balck-alpha);
+    backdrop-filter: blur(var(--blur));
     border-radius: var(--radius-reg);
-    box-shadow: inset 0 0 2px 0.5px rgb(255 255 255 / 10%),
-    0 0 20px rgb(0 0 0 / 10%);
-    z-index: 999;
+    box-shadow: var(--shadow-surface);
+    z-index: 9999;
 }
 .nav a {
-    color: rgb(255 255 255 / 50%);
-    box-shadow: 0 0 10px rgb(0 0 0 / 20%);
-    transition: 0.3s ease;
+    color: var(--white-alpha);
+    box-shadow: var(--shadow-drop-strong);
+    transition: var(--transition);
 }
 .nav a:hover {
-    color: white;
+    color: var(--white);
 }
 header {
     position: sticky;
@@ -118,15 +136,32 @@ main {
 
     width: fit-content;
     margin: 0 auto; 
-    background: black;
-    padding: var(--space-xxxs);
+
+    position: sticky;
+    top: 110px;
+    background-color: var(--balck-alpha);
+    backdrop-filter: blur(var(--blur));
+    border-radius: var(--radius-pill);
+
+    z-index: 999;
+}
+/* ── Filter toolbar: Dynamic styling -- */
+input::placeholder {
+    color: var(--white-alpha);
+    transition: inherit;
+}
+.input:hover::placeholder, .label.filter-hover::placeholder {
+    color: var(--white);
+}
+.filter-pill {
+    box-shadow: var(--shadow-card);
 }
 /* ── Filter toolbar: Filter pills collapse behaviour -- */
 .filter-pill, .inner-pill.chosen {
     display: grid;
     grid-template-columns: 0fr;
-    transition: 0.3s ease;
-    border-radius: 9999px;
+    transition: var(--transition);
+    border-radius: var(--radius-pill);
 }
 .filter-pill * {
     transition: inherit;
@@ -155,18 +190,6 @@ main {
 .input.filter-hover {
     margin-left: var(--space-xxxs);
 }
-/* ── Filter toolbar: Dynamic styling -- */
-input::placeholder {
-    color: rgb(255 255 255 / 50%);
-    transition: inherit
-}
-.input:hover::placeholder, .label.filter-hover::placeholder {
-    color: white;
-}
-.filter-pill {
-    /* TODO */
-    background: hsl(var(--hue) 50% 10%);
-}
 
 /* ── Main: Results grid -- */
 .results-grid {
@@ -184,17 +207,22 @@ input::placeholder {
 
     max-width: 16em;
     overflow: hidden;
-    padding: var(--space-xs);
     border-radius: var(--radius-reg);
 
-    box-shadow: inset 0 0 2px 0.5px rgb(255 255 255 / 20%),
-    0 0 20px rgb(0 0 0 / 20%);
+    box-shadow: var(--shadow-card);
     background: linear-gradient(transparent 50%, black);
 }
 
 .anime-card__title {
+    border-radius: var(--radius-med) var(--radius-med) 0 0 ;
+    font-size: 1em;
     font-weight: normal;
-    line-height: normal;
+    line-height: var(--line-height-text);
+
+    backdrop-filter: blur(var(--blur));
+    box-shadow: var(--shadow-card);
+    
+    padding: var(--space-xs);
 }
 .anime-card__cover {
     position: absolute;
