@@ -56,7 +56,7 @@ html {
     --shadow-inner: inset 0 0 2px 0.5px rgb(255 255 255 / 10%);
     --shadow-inner-strong: inset 0 0 2px 0.5px rgb(255 255 255 / 20%);
     --shadow-drop: 0 0 20px rgb(0 0 0 / 10%);
-    --shadow-drop-strong: 0 0 20px rgb(0 0 0 / 20%);
+    --shadow-drop-strong: 0 0 20px rgb(0 0 0 / 40%);
     --shadow-surface: var(--shadow-inner), var(--shadow-drop);
     --shadow-card: var(--shadow-inner-strong), var(--shadow-drop-strong);
 
@@ -201,6 +201,10 @@ input::placeholder {
 }
 .anime-card {
     display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-top: 25%;
+
     position: relative;
     aspect-ratio: 5 / 7;
     align-items: end;
@@ -211,18 +215,42 @@ input::placeholder {
 
     box-shadow: var(--shadow-card);
     background: linear-gradient(transparent 50%, black);
-}
 
-.anime-card__title {
-    border-radius: var(--radius-med) var(--radius-med) 0 0 ;
-    font-size: 1em;
-    font-weight: normal;
     line-height: var(--line-height-text);
+}
+.anime-card__description {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 0;
+
+    border-radius: var(--radius-reg) var(--radius-reg) 0 0 ;
+    padding: 0.65em;
 
     backdrop-filter: blur(var(--blur));
     box-shadow: var(--shadow-card);
+
+    transition: var(--transition);
+}
+.anime-card__description:hover {
+    flex-grow: 1;
+}
+.anime-card__description--title {
+    font-size: 1.1em;
+    font-weight: 500;
+}
+.anime-card__description--info-container {
+    display: grid;
+    grid-template-rows: 0fr;
+    align-content: end;
     
-    padding: var(--space-xs);
+    transition: var(--transition);
+}
+.anime-card__description:hover .anime-card__description--info-container {
+    grid-template-rows: 1fr;
+}
+.anime-card__description--info-content {
+    overflow: hidden;
 }
 .anime-card__cover {
     position: absolute;
