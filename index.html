@@ -8,91 +8,92 @@
     <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-    <header>
-        <nav class="nav">
-            <a href="">Home</a>
-            <a href="">Browse</a>
-        </nav>
-        <div class="logo">
-            <img class="logo__mark">
-            <span class="logo__wordname">Hakken</span>
-        </div>
-        <nav class="nav right">
-            <a class="btn" href="">Log in</a>
-            <button class="btn">
-                <img class="icon">
-            </button>
-        </nav>
-    </header>
     <main>
-        <form class="toolbar">
-            <div class="filter-pill">
-                <div class="filter-content">
-                    <span class="value">Action</span>
-                    <div class="inner-pill"><div class="inner-content">
-                        <input class="label" type="search" placeholder="Genre">
-                    </div></div>
+        <form class="toolbar"> 
+            <!-- glass for glass style, tool for js -->
+            <div class="search glass tool">
+                <svg class="icon"></svg>
+                <div class="collapsible">
+                    <input class="label" type="search" placeholder="Search">
                 </div>
             </div>
-            <div class="filter-pill">
-                <div class="filter-content">
-                    <span class="value"></span>
-                    <div class="inner-pill"><div class="inner-content">
-                        <input class="label" type="search" placeholder="Year">
-                    </div></div>
+
+            <div class="filter glass tool">
+                <div class="values">
+                    <span class="value">Action</span>
+                    <span class="value">Drama</span>
                 </div>
+                <div class="collapsible"><input class="label" type="search" placeholder="Genre"></div>
+            </div>
+            <div class="filter glass tool">
+                <div class="values">
+                    <span class="value">2020</span>
+                </div>
+                <div class="collapsible"><input class="label" type="search" placeholder="Year"></div>
+            </div>
+            <div class="filter glass tool">
+                <div class="values"></div>
+                <div class="collapsible"><input class="label" type="search" placeholder="Season"></div>
+            </div>
+            <div class="filter glass tool">
+                <div class="values"></div>
+                <div class="collapsible"><input class="label" type="search" placeholder="Format"></div>
             </div>
         </form>
-        
+
         <ol class="results-grid">
             <li class="anime-card">
-                <img class="anime-card__cover" src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx182255-butzrqd4I0aC.jpg">
-                <div class="anime-card__description">
-                    <h3 class="anime-card__description--title">Sousou no Frieren 2nd Season</h3>
-                    <div class="anime-card__description--info-container">
-                        <div class="anime-card__description--info-content">
-                            <div class="genres">
-                                <span class="genre">Adventure</span>
-                                <span class="genre">Drama</span>
-                                <span class="genre">Fantasy</span>
-                            </div>
-                            <div class="pills">
-                                <span class="format pill">TV</span>
-                                <span class="eps pill">10 Eps</span>
-                                <span class="score pill">8.9</span>
-                            </div>
+                <img class="cover" src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx182255-butzrqd4I0aC.jpg">
+                <div class="details">
+                    <h3 class="title">Sousou no Frieren 2nd Season</h3>
+                    <div class="collapsible vertical">
+                        <ul class="genres">
+                            <li class="genre">Adventure</li>
+                            <li class="genre">Drama</li>
+                            <li class="genre">Fantasy</li>
+                        </ul>
+                        <div class="stats">
+                            <span class="format pill">TV</span>
+                            <span class="eps pill">10 Eps</span>
+                            <span class="score pill">8.9</span>
                         </div>
                     </div>
                 </div>
             </li>
         </ol>
     </main>
-    <footer>
-        <a href="https://github.com/script-amv/hakken-search-page" class="logo">
-            <img class="mark">
-            <span class="wordname">Github</span>
-        </a>
-        <a class="credits" href="https://github.com/script-amv">by Dmitrii Shostak</a>
-        <nav class="nav right">
-            <a href="">About</a>
-            <a href="">Terms & Privacy</a>
-            <a href="">Contact</a>
-        </nav>
-    </footer>
+
+
+
     <script>
-        const toolbar = document.querySelector('.toolbar');
-        toolbar.addEventListener('mouseenter', () => [toolbar, ...toolbar.querySelectorAll('*')].forEach(el => el.classList.add('toolbar-hover')));
-        toolbar.addEventListener('mouseleave', () => [toolbar, ...toolbar.querySelectorAll('*')].forEach(el => el.classList.remove('toolbar-hover')));
+        function updateTool() {
+            toolbar.querySelectorAll('.tool').forEach(tool => {
+                const value = tool.querySelector('.value');
+                const input = tool.querySelector('input');
+                tool.classList.toggle('chosen', !!value);
+                tool.classList.toggle('hasInput', !!input.value);
+            });
+        }
 
-        document.querySelectorAll('.filter-pill').forEach(pill => {
-            if (pill.querySelector('.value')?.textContent.trim()) {
-                [pill, ...pill.querySelectorAll('*')].forEach(el => el.classList.add('chosen'));
-                pill.querySelectorAll('.label').forEach(el => el.classList.replace('label', 'input'));
-            }
+        document.querySelectorAll('.tool').forEach(tool => {
+            const input = tool.querySelector('input');
+            const values = tool.querySelector('.values');
 
-            pill.addEventListener('mouseenter', () => [pill, ...pill.querySelectorAll('*')].forEach(el => el.classList.add('filter-hover')));
-            pill.addEventListener('mouseleave', () => [pill, ...pill.querySelectorAll('*')].forEach(el => el.classList.remove('filter-hover')));
+            input.addEventListener('input', updateTool);
+            
+            input.addEventListener('keydown', e => {
+                if (e.key !== 'Enter' || !input.value.trim()) return;
+                const value = document.createElement('span');
+                value.className = 'value';
+                value.textContent = input.value;
+                values.appendChild(value);
+                input.value = '';
+                updateTool();
+            });
         });
+
+        const toolbar = document.querySelector('.toolbar');
+        updateTool();
     </script>
 </body>
 </html>

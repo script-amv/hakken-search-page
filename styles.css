@@ -2,352 +2,102 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-
-    text-decoration: none;
-    list-style: none;
-    color: inherit;
 }
-button, input {
+input {
     all: unset;
-    box-sizing: border-box;
     field-sizing: content;
 }
 input::-webkit-search-cancel-button {
   -webkit-appearance: none;
 }
-img {
-    /* TODO: replace with real image sizing */
-    display: inline-block;
-    height: 1em;
-    width: 1em;
-    background: red;
-}
 
-
-
-
-html {
-    color: #eee;
-    line-height: var(--line-height-ui);
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    
-    background: radial-gradient(circle at top left in oklab, hsl(var(--hue) 70% 7%), hsl(0, 0%, 2%));
-    background-attachment: fixed;
-
-
-    --space-xxxs: 0.25em;
-    --space-xxs: 0.5em;
-    --space-xs: 1em;
-    --space-s: 2em;
-    --space-m: 5em;
-
-    --hue: 220;
-
-    --radius-pill: 9999px;
-    --radius-reg: 20px;
-    --radius-med: 30px;
-
-    --line-height-ui: 1cap; 
-    --line-height-text: normal;
-
-    --transition: 0.3s ease;
-
-    --blur: 5px;
-    --shadow-inner: inset 0 0 2px 0.5px rgb(255 255 255 / 10%);
-    --shadow-inner-strong: inset 0 0 2px 0.5px rgb(255 255 255 / 20%);
-    --shadow-drop: 0 0 20px rgb(0 0 0 / 10%);
-    --shadow-drop-strong: 0 0 20px rgb(0 0 0 / 40%);
-    --shadow-surface: var(--shadow-inner), var(--shadow-drop);
-    --shadow-card: var(--shadow-inner-strong), var(--shadow-drop-strong);
-
-    --black: black;
-    --balck-alpha: rgb(0 0 0 / 0.6);
-    --white: white;
-    --white-alpha: rgb(255 255 255 / 0.5);
-}
-
-
-
-
-/* ── Page layout ─── */
-body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--space-m);
-}
-main, header {
-    width: min(60em, 100%);
-}
-footer {
-    width: 100%;
-}
-
-
-
-
-/* ── Header & footer & main shell ── */
-header, footer {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    padding: var(--space-s);
-
-    background: var(--balck-alpha);
-    backdrop-filter: blur(var(--blur));
-    border-radius: var(--radius-reg);
-    box-shadow: var(--shadow-surface);
-    z-index: 9999;
-}
-.nav a {
-    color: var(--white-alpha);
-    box-shadow: var(--shadow-drop-strong);
-    transition: var(--transition);
-}
-.nav a:hover {
-    color: var(--white);
-}
-header {
-    position: sticky;
-    top: var(--space-xs);
-    margin-bottom: var(--space-xs);
-}
-main {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-s);
-}
-
-
-/* ── Header & Footer: Nav & logo ── */
-.nav, .logo {
-    display: flex;
-    align-items: center;
-    gap: var(--space-s);
-}
-.right {
-    justify-content: end;
-}
-
-
-/* ── Main: Filter toolbar -- */
-.toolbar {
-    display: flex;
-    align-items: center;
-
-    width: fit-content;
-    margin: 0 auto; 
-
-    position: sticky;
-    top: 110px;
-    background-color: var(--balck-alpha);
-    backdrop-filter: blur(var(--blur));
-    border-radius: var(--radius-pill);
-
-    line-height: var(--line-height-text);
-
-    z-index: 999;
-}
-/* ── Filter toolbar: Dynamic styling -- */
-input::placeholder {
-    color: var(--white-alpha);
-    transition: color var(--transition);
-}
-.input:hover::placeholder, .label.filter-hover::placeholder {
-    color: var(--white);
-}
-.filter-pill {
-    box-shadow: var(--shadow-card);
-    border-radius: var(--radius-pill);
-    transition: var(--transition);
-}
-/* ── Filter toolbar: Filter pills collapse behaviour -- */
-.filter-pill, .inner-pill.chosen {
+/* === Collapse: collapsed by default, reveal on parent hover === */
+.collapsible {
     display: grid;
     grid-template-columns: 0fr;
+    transition: 1s ease;
 }
-.filter-pill * {
-    transition: inherit;
-    transition-behavior: allow-discrete;
-}
-.filter-content, .inner-content {
-    display: inline-flex;
-    align-items: center;
+.collapsible > * {
+    min-width: 0;
     overflow: hidden;
 }
-.filter-pill.toolbar-hover,
-.filter-pill.chosen,
-.inner-pill.chosen.filter-hover,
-.inner-pill {
+*:hover > .collapsible {
     grid-template-columns: 1fr;
 }
-/* ── Filter toolbar: Dynamic Filter pills space (padding, margin) -- */
-.filter-pill {
-    padding-block: var(--space-xxs);
-}
-.filter-pill.toolbar-hover,
-.filter-pill.chosen {
-    padding: var(--space-xxs);
-    margin: var(--space-xxxs);
-}
-.input.filter-hover {
-    margin-left: var(--space-xxxs);
-}
-
-/* ── Main: Results grid -- */
-.results-grid {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(12em, 1fr));
-    gap: var(--space-s);
-    justify-items: center;
-}
-/* Results grid: Anime card */
-.anime-card {
-    display: flex;
-    flex-direction: column;
-    justify-content: end;
-
-    position: relative;
-    aspect-ratio: 5 / 7;
-
-    max-width: 16em;
-    overflow: hidden;
-    border-radius: var(--radius-reg);
-
-    box-shadow: var(--shadow-card);
-    background: linear-gradient(transparent 50%, black);
-
-    line-height: var(--line-height-text);
-}
-.anime-card__cover {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -1;
-}
-.anime-card__description {
-    border-radius: var(--radius-reg) var(--radius-reg) 0 0 ;
-    padding: 0.65em;
-
-    backdrop-filter: blur(var(--blur));
-    box-shadow: var(--shadow-card);
-}
-.anime-card__description--title {
-    font-size: 1.1em;
-    font-weight: 500;
-}
-.anime-card__description--title::after {
-    content: "";
-    display: block;
-    background: rgb(255 255 255 / 10%);
-    height: 1px;
-    width: 100%;
-    opacity: 0;
-    margin-block: 0em;
-    transition: var(--transition);
-}
-.anime-card__description--info-container {
+.collapsible .vertical {
     display: grid;
     grid-template-rows: 0fr;
-    
-    transition: var(--transition);
-    height: 100%;
+    transition: 1s ease;
 }
-.anime-card__description--info-content {
-    display: flex;
-    flex-flow: column;
-    gap: var(--space-s);
+.collapsible .vertical > * {
+    min-width: 0;
     overflow: hidden;
 }
-.pills {
-    display: inline-flex;
-    justify-content: space-between;
-    gap: var(--space-xs);
-}
-.pill {
-    text-align: center;
-    border-radius: var(--radius-pill);
-    backdrop-filter: blur(var(--blur));
-    box-shadow: var(--shadow-card);
-    flex-grow: 1;
-    padding: var(--space-xxs);
-}
-.anime-card__description:hover .anime-card__description--info-container {
+*:hover > .collapsible .vertical {
     grid-template-rows: 1fr;
 }
-.anime-card__description:hover .anime-card__description--title::after {
-    opacity: 1;
-    margin-block: var(--space-xxs);
-}
-/*
-.anime-card__description {
-    display: flex;
-    flex-direction: column;
+/* --- Collapse --- */
 
-    border-radius: var(--radius-reg) var(--radius-reg) 0 0 ;
-    padding: 0.65em;
-
-    backdrop-filter: blur(var(--blur));
-    box-shadow: var(--shadow-card);
-
-    transition: var(--transition);
+html {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: dimgray;
 }
-.anime-card__description--title {
-    font-size: 1.2em;
-    font-weight: 500;
-}
-.anime-card__description--info-container {
-    display: grid;
-    grid-template-rows: 0fr;
-    
-    transition: var(--transition);
+.icon {
     height: 100%;
+    aspect-ratio: 1 / 1;
+    background: red;
 }
-.anime-card__description:hover .anime-card__description--info-container {
-    grid-template-rows: 1fr;
+.glass {
+    color: white;
+    background-color: rgb(255 255 255 / 6%);
+    box-shadow: inset 1px -1px 0px 0px rgb(0 0 0 / 40%),
+                inset -1px 1px 0px 0px rgb(0 0 0 / 40%),
+                inset 1px 1px 0px 0px rgb(255 255 255 / 40%),
+                inset -1px -1px 0px 0px rgb(255 255 255 / 20%),
+                inset 5px 5px 5px 0px rgb(0 0 0 / 100%),
+                inset -1px -1px 5px 0px rgb(255 255 255 / 8%)
+    ;
 }
-.anime-card__description--info-content {
-    overflow: hidden;
+
+/* === Toolbar === */
+.toolbar {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    max-width: fit-content;
+    background: black;
+    border-radius: 999px;
 
+    transition: 1s ease;
 }
-.anime-card__cover {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -1;
-}
-.anime-card__description--title::after {
-    content: "";
-    display: block;
-    background: rgb(255 255 255 / 10%);
-    height: 1px;
-    width: 100%;
-    opacity: 0;
-    margin-block: 0em;
-}
-.anime-card__description:hover .anime-card__description--title::after {
-    opacity: 1;
-    margin-block: var(--space-xxs);
-}
-.genre {
-    display: inline;
-}
-.pills {
-    display: inline-flex;
-    justify-content: space-around;
-}
-.pill {
+.tool {
+    display: flex;
+    height: 2em;
+    align-items: center;
+    border-radius: 999px;
+    margin: .25em;
+    padding: .5em;
 
-    text-align: center;
-    border-radius: var(--radius-pill);
-    backdrop-filter: blur(var(--blur));
-    box-shadow: var(--shadow-card);
-    padding: var(--space-xxs) var(--space-xs);
+    transition: inherit;
 }
+.values {
+    display: flex;
+    gap: .25em;
+    margin-right: .25em;
+
+    transition: inherit;
+}
+/* === Spacing: margins/padding collapse with the element === */
+.toolbar:not(:hover) .tool:not(.chosen):not(.hasInput):not(:has(.icon)) { /* No spacing when: toolbar not hovered + tool has no icon/chosen/input */
+    margin-inline: 0;
+    padding-inline: 0;
+}
+.values:empty, .tool:not(:hover):not(.hasInput) .values { /* No spacing when: values empty + tool not hovered + no input typed */
+    margin-inline: 0;
+}
+/* === Collapse: reveal unchosen tools on toolbar hover, or when typing === */
+.toolbar:hover .tool:not(.chosen) .collapsible,
+.tool.hasInput .collapsible {
+    grid-template-columns: 1fr; 
+}
+
+
+/* === Grid === */
