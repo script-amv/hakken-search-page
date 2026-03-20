@@ -10,7 +10,9 @@ input {
 input::-webkit-search-cancel-button {
   -webkit-appearance: none;
 }
-
+input::placeholder {
+    color: var(--white);
+}
 /* === Collapse: collapsed by default, reveal on parent hover === */
 .collapsible {
     display: grid;
@@ -24,24 +26,38 @@ input::-webkit-search-cancel-button {
 *:hover > .collapsible {
     grid-template-columns: 1fr;
 }
-/* --- Collapse --- */
+
+
 html {
     font-family: system-ui, -apple-system, sans-serif;
     background: rgb(10, 10, 10);
     color: white;
 
 
-    --blur: blur(5px);
+    --blur-reg: blur(5px);
+    --blur-strong: blur(10px);
 
     --radius-pill: 9999px;
     --radius-reg: 2em;
 
-    --transition: 0.3s ease;
+    --transition: 0.4s ease;
 
+    --space-xxxs: .125em;
     --space-xxs: .25em;
     --space-xs: .5em;
     --space-s: 1em;
     --space-m: 2em;
+
+    
+    --white: white;
+    --white-subtle: rgb(255 255 255 / 0.5);
+    --white-faint: rgb(255 255 255 / 0.25);
+    
+    --black: black;
+    --balck-alpha: rgb(0 0 0 / 0.75);
+
+    --alpha: 0.5;
+    --visible: 1;
 
     --glass-shadow: inset 1px -1px 0px 0px rgb(0 0 0 / 40%),
                     inset -1px 1px 0px 0px rgb(0 0 0 / 40%),
@@ -50,21 +66,25 @@ html {
                     inset 5px 5px 10px 0px rgb(0 0 0 / 50%),
                     inset -5px -5px 20px 0px rgb(255 255 255 / 10%);
 }
-/* TODO */
-.icon {
-    height: 100%;
-    aspect-ratio: 1 / 1;
-    background: red;
+main {
+    width: min(60em, 90%);
+    margin-inline: auto;
 }
-
-
 /* === Toolbar === */
 .toolbar {
     display: flex;
+    margin-inline: auto;
+    position: sticky;
+    top: var(--space-s);
+    margin-block: var(--space-s);
     max-width: fit-content;
-    background: black;
-    border-radius: var(--radius-pill);
 
+    border-radius: var(--radius-pill);
+    background: var(--balck-alpha);
+    backdrop-filter: var(--blur-strong);
+    box-shadow: 0px 0px 10px 0px rgb(0 0 0 / 75%);
+
+    z-index: 9999;
     transition: var(--transition);
 }
 .tool {
@@ -86,13 +106,47 @@ html {
 
     transition: inherit;
 }
+.icon {
+    margin-right: var(--space-xxs);
+    padding: var(--space-xxxs);
+    height: 100%;
+    aspect-ratio: 1 / 1;
+}
+.icon path {
+    fill: white;
+    stroke: white;
+}
+.toolbar hr {
+    width: 2px;
+    border: none;
+    box-shadow: var(--glass-shadow);
+    margin: var(--space-xs);
+}
+/* === Highlight label & icon on hover === */
+.label::placeholder {
+    opacity: var(--alpha);
+    transition: var(--transition); /* transition: inherit; not working for some reason */
+}
+.label:hover::placeholder {
+    opacity: var(--visible);
+}
+.icon {
+    opacity: var(--alpha);
+    transition: inherit;
+}
+*:hover > .icon {
+    opacity: var(--visible);
+}
 /* === Spacing: margins/padding collapse with the element === */
-.toolbar:not(:hover) .tool:not(.chosen):not(.hasInput):not(:has(.icon)) { /* No spacing when: toolbar not hovered + tool has no icon/chosen/input */
+.toolbar:not(:hover) .tool:not(.chosen):not(.hasInput):not(:has(.icon)) { /* No spacing for tool when: toolbar not hovered + tool has no icon/chosen/input */
     margin-inline: 0;
     padding-inline: 0;
 }
-.values:empty, .tool:not(:hover):not(.hasInput) .values { /* No spacing when: values empty + tool not hovered + no input typed */
+.values:empty, .tool:not(:hover):not(.hasInput) .values { /* No spacing for values when: values empty + tool not hovered + no input typed */
     margin-inline: 0;
+}
+.toolbar:not(:hover) .tool:not(.hasInput) .icon {
+    margin-inline: 0; /* No spacing for icon when: toolbar not hovered and no input value (practicly when input is hidden  */
 }
 /* === Collapse: reveal unchosen tools on toolbar hover, or when typing === */
 .toolbar:hover .tool:not(.chosen) .collapsible,
@@ -109,8 +163,10 @@ html {
     gap: var(--space-s);
 }
 .anime-card {
+    padding: var(--space-xs);
     display: flex;
     position: relative;
+    width: 100%;
     aspect-ratio: 5 / 7;
     overflow: hidden;
     border-radius: var(--radius-reg);
@@ -119,7 +175,8 @@ html {
     box-shadow: var(--glass-shadow)
 }
 .details {
-    backdrop-filter: var(--blur);
+    width: 100%;
+    backdrop-filter: var(--blur-reg);
     border-radius: inherit;
     margin-top: auto;
     padding: var(--space-s);
@@ -128,11 +185,13 @@ html {
     box-shadow: var(--glass-shadow);
     
     transition: var(--transition);
+    overflow: hidden;
 }
 .title {
     margin-bottom: var(--space-s); /* Simulates padding */
 }
 .cover {
+    inset: 0;
     position: absolute;
     width: 100%;
     height: 100%;
@@ -140,14 +199,14 @@ html {
     z-index: -1;
 }
 /* === Collapse: vertical collapse with bottom padding === */
-.details > .collapsible {
+.anime-card .details > .collapsible {
     grid-template-columns: unset;
     grid-template-rows: 0fr;
 }
-.details:hover > .collapsible { 
+.anime-card .details:hover > .collapsible { 
     grid-template-rows: 1fr;
     padding-bottom: var(--space-s); /* Add btm padding when expanded */
 }
-.u--cell {
+.anime-card .u--cell {
     margin-top: auto; /* Utility to set anchor to the btm */
 }
