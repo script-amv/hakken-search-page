@@ -15,7 +15,7 @@ input::-webkit-search-cancel-button {
 .collapsible {
     display: grid;
     grid-template-columns: 0fr;
-    transition: 1s ease;
+    transition: inherit;
 }
 .collapsible > * {
     min-width: 0;
@@ -24,64 +24,65 @@ input::-webkit-search-cancel-button {
 *:hover > .collapsible {
     grid-template-columns: 1fr;
 }
-.collapsible .vertical {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: 1s ease;
-}
-.collapsible .vertical > * {
-    min-width: 0;
-    overflow: hidden;
-}
-*:hover > .collapsible .vertical {
-    grid-template-rows: 1fr;
-}
 /* --- Collapse --- */
-
 html {
     font-family: system-ui, -apple-system, sans-serif;
-    background: dimgray;
+    background: rgb(10, 10, 10);
+    color: white;
+
+
+    --blur: blur(5px);
+
+    --radius-pill: 9999px;
+    --radius-reg: 2em;
+
+    --transition: 0.3s ease;
+
+    --space-xxs: .25em;
+    --space-xs: .5em;
+    --space-s: 1em;
+    --space-m: 2em;
+
+    --glass-shadow: inset 1px -1px 0px 0px rgb(0 0 0 / 40%),
+                    inset -1px 1px 0px 0px rgb(0 0 0 / 40%),
+                    inset 1px 1px 0px 0px rgb(255 255 255 / 40%),
+                    inset -1px -1px 0px 0px rgb(255 255 255 / 20%),
+                    inset 5px 5px 10px 0px rgb(0 0 0 / 50%),
+                    inset -5px -5px 20px 0px rgb(255 255 255 / 10%);
 }
+/* TODO */
 .icon {
     height: 100%;
     aspect-ratio: 1 / 1;
     background: red;
 }
-.glass {
-    color: white;
-    background-color: rgb(255 255 255 / 6%);
-    box-shadow: inset 1px -1px 0px 0px rgb(0 0 0 / 40%),
-                inset -1px 1px 0px 0px rgb(0 0 0 / 40%),
-                inset 1px 1px 0px 0px rgb(255 255 255 / 40%),
-                inset -1px -1px 0px 0px rgb(255 255 255 / 20%),
-                inset 5px 5px 5px 0px rgb(0 0 0 / 100%),
-                inset -1px -1px 5px 0px rgb(255 255 255 / 8%)
-    ;
-}
+
 
 /* === Toolbar === */
 .toolbar {
     display: flex;
     max-width: fit-content;
     background: black;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
 
-    transition: 1s ease;
+    transition: var(--transition);
 }
 .tool {
     display: flex;
-    height: 2em;
+    height: var(--space-m);
     align-items: center;
-    border-radius: 999px;
-    margin: .25em;
-    padding: .5em;
+    border-radius: inherit;
+    margin: var(--space-xxs);
+    padding: var(--space-xs);
 
     transition: inherit;
+
+    box-shadow: var(--glass-shadow)
 }
 .values {
     display: flex;
-    gap: .25em;
-    margin-right: .25em;
+    gap: var(--space-xxs);
+    margin-right: var(--space-xxs);
 
     transition: inherit;
 }
@@ -101,3 +102,52 @@ html {
 
 
 /* === Grid === */
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(12em, 1fr)); /* never shorter than 12em */
+    justify-items: center;
+    gap: var(--space-s);
+}
+.anime-card {
+    display: flex;
+    position: relative;
+    aspect-ratio: 5 / 7;
+    overflow: hidden;
+    border-radius: var(--radius-reg);
+
+    background: linear-gradient(transparent 50%, black);
+    box-shadow: var(--glass-shadow)
+}
+.details {
+    backdrop-filter: var(--blur);
+    border-radius: inherit;
+    margin-top: auto;
+    padding: var(--space-s);
+    padding-bottom: 0; /* No btm padding */
+
+    box-shadow: var(--glass-shadow);
+    
+    transition: var(--transition);
+}
+.title {
+    margin-bottom: var(--space-s); /* Simulates padding */
+}
+.cover {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+/* === Collapse: vertical collapse with bottom padding === */
+.details > .collapsible {
+    grid-template-columns: unset;
+    grid-template-rows: 0fr;
+}
+.details:hover > .collapsible { 
+    grid-template-rows: 1fr;
+    padding-bottom: var(--space-s); /* Add btm padding when expanded */
+}
+.u--cell {
+    margin-top: auto; /* Utility to set anchor to the btm */
+}
