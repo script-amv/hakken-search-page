@@ -6,6 +6,7 @@
     <title>Browse Anime</title>
 
     <link rel="stylesheet" href="./styles.css">
+    <script src="app.js" defer></script>
 </head>
 <body>
     <main>
@@ -104,38 +105,5 @@
             </li>
         </ol>
     </main>
-
-
-
-    <script>
-        function updateTool() {
-            toolbar.querySelectorAll('.tool').forEach(tool => {
-                const value = tool.querySelector('.value');
-                const input = tool.querySelector('input');
-                tool.classList.toggle('chosen', !!value);
-                tool.classList.toggle('hasInput', !!input.value);
-            });
-        }
-
-        document.querySelectorAll('.tool').forEach(tool => {
-            const input = tool.querySelector('input');
-            const values = tool.querySelector('.values');
-
-            input.addEventListener('input', updateTool);
-            
-            input.addEventListener('keydown', e => {
-                if (e.key !== 'Enter' || !input.value.trim()) return;
-                const value = document.createElement('span');
-                value.className = 'value';
-                value.textContent = input.value;
-                values.appendChild(value);
-                input.value = '';
-                updateTool();
-            });
-        });
-
-        const toolbar = document.querySelector('.toolbar');
-        updateTool();
-    </script>
 </body>
 </html>
