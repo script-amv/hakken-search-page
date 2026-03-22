@@ -1,55 +1,37 @@
-function submitInputListener(e) {
-    let input = e.target
-    let tool = input.closest(".tool")
+const toolbar = document.querySelector('.toolbar');
 
-    if (e.key === 'Enter' && input.value.trim()) {
-        let event = new CustomEvent("submitInput", {
-            detail: {
-                value: input.value
-            }
-        })
-
-        tool.dispatchEvent(event)
-    }
+function updateTool(tool) {
+    tool.classList.toggle('hasValue', !!tool.querySelector('.value'));
+    tool.classList.toggle('hasInput', !!tool.querySelector('input').value);
+    tool.classList.toggle('hasIcon',  !!tool.querySelector('.icon'));
 }
-
-let inputs = document.querySelectorAll('.toolbar input')
-
-inputs.forEach(input => {
-    input.addEventListener('keydown', submitInputListener)
-    input.addEventListener('input', e => {
-        let tool = input.closest('.tool')
-        updateToolClasses(tool)
-    })
-})
-
-
 
 function addFilterValue(filter, valueContent) {
-    let values = filter.querySelector(".values")
-    let value = document.createElement("span")
-    value.classList.add("value")
+    const value = document.createElement('span');
+    value.className = 'value';
     value.textContent = valueContent
-    values.appendChild(value)
-
-    let input = filter.querySelector("input")
-    input.value = ""
+    filter.querySelector('.values').appendChild(value);
+    filter.querySelector('input').value = '';
 }
 
-let filters = document.querySelectorAll(".toolbar .filter")
+toolbar.querySelectorAll('input').forEach(input => {
+    const tool = input.closest('.tool');
 
-filters.forEach(filter => {
-    filter.addEventListener("submitInput", e => addFilterValue(filter, e.detail.value))
-})
+    input.addEventListener('input', () => updateTool(tool));
+
+    input.addEventListener('keydown', e => {
+        if (e.key !== 'Enter' || !input.value.trim()) return;
+        tool.dispatchEvent(new CustomEvent('submitInput', { detail: { value: input.value } }));
+    });
+});
+
+toolbar.querySelectorAll('.filter').forEach(filter => {
+    filter.addEventListener('submitInput', e => {
+        valueContent = e.detail.value;
+        addFilterValue(filter, valueContent);
+        updateTool(filter);
+    });
+});
 
 
-
-function updateToolClasses(tool) {
-    let hasValues = Boolean(tool.querySelector('.value'))
-    let hasInput = Boolean(tool.querySelector('input').value)
-    tool.classList.toggle('chosen', hasValues)
-    tool.classList.toggle('hasInput', hasInput)
-}
-
-let tools = document.querySelectorAll(".toolbar .tool")
-tools.forEach(tool => updateToolClasses(tool))
+toolbar.querySelectorAll('.tool').forEach(updateTool);

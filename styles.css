@@ -13,19 +13,6 @@ input::-webkit-search-cancel-button {
 input::placeholder {
     color: var(--white);
 }
-/* === Collapse: collapsed by default, reveal on parent hover === */
-.collapsible {
-    display: grid;
-    grid-template-columns: 0fr;
-    transition: inherit;
-}
-.collapsible > * {
-    min-width: 0;
-    overflow: hidden;
-}
-*:hover > .collapsible {
-    grid-template-columns: 1fr;
-}
 
 
 html {
@@ -95,19 +82,17 @@ main {
     margin: var(--space-xxs);
     padding: var(--space-xs);
 
-    transition: inherit;
-
     box-shadow: var(--glass-shadow)
 }
 .values {
     display: flex;
     gap: var(--space-xxs);
-    margin-right: var(--space-xxs);
-
-    transition: inherit;
+}
+.tool.hasValue .label,
+.tool.hasIcon .label {
+    margin-left: var(--space-xxs);
 }
 .icon {
-    margin-right: var(--space-xxs);
     padding: var(--space-xxxs);
     height: 100%;
     aspect-ratio: 1 / 1;
@@ -122,38 +107,24 @@ main {
     box-shadow: var(--glass-shadow);
     margin: var(--space-xs);
 }
-/* === Highlight label & icon on hover === */
-.label::placeholder {
-    opacity: var(--subtle);
-    transition: var(--transition); /* transition: inherit; not working for some reason */
-}
-.label:hover::placeholder {
-    opacity: var(--visible);
-}
-.icon {
-    opacity: var(--subtle);
+/* === Collapse Behaviour === */
+.tool, .icon, .label {
+    max-width: fit-content;
+    overflow: hidden;
     transition: inherit;
+    interpolate-size: allow-keywords;
 }
-*:hover > .icon {
-    opacity: var(--visible);
-}
-/* === Spacing: margins/padding collapse with the element === */
-.toolbar:not(:hover) .tool:not(.chosen):not(.hasInput):not(:has(.icon)) { /* No spacing for tool when: toolbar not hovered + tool has no icon/chosen/input */
+.toolbar:not(:hover) .tool:not(.hasValue):not(.hasInput),
+
+.tool:not(:hover).hasValue:not(.hasInput) .label,
+.tool:not(:hover).hasIcon:not(.hasInput) .label,
+
+.toolbar:not(:hover) .tool:not(.hasInput) .icon {
+    max-width: 0;
     margin-inline: 0;
     padding-inline: 0;
+    opacity: .5;
 }
-.values:empty, .tool:not(:hover):not(.hasInput) .values { /* No spacing for values when: values empty + tool not hovered + no input typed */
-    margin-inline: 0;
-}
-.toolbar:not(:hover) .tool:not(.hasInput) .icon {
-    margin-inline: 0; /* No spacing for icon when: toolbar not hovered and no input value (practicly when input is hidden  */
-}
-/* === Collapse: reveal unchosen tools on toolbar hover, or when typing === */
-.toolbar:hover .tool:not(.chosen) .collapsible,
-.tool.hasInput .collapsible {
-    grid-template-columns: 1fr; 
-}
-
 
 /* === Grid === */
 .results-grid {
@@ -198,16 +169,4 @@ main {
     height: 100%;
     object-fit: cover;
     z-index: -1;
-}
-/* === Collapse: vertical collapse with bottom padding === */
-.anime-card .details > .collapsible {
-    grid-template-columns: unset;
-    grid-template-rows: 0fr;
-}
-.anime-card .details:hover > .collapsible { 
-    grid-template-rows: 1fr;
-    padding-bottom: var(--space-s); /* Add btm padding when expanded */
-}
-.anime-card .u--cell {
-    margin-top: auto; /* Utility to set anchor to the btm */
 }
