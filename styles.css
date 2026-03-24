@@ -13,7 +13,9 @@ input::-webkit-search-cancel-button {
 input::placeholder {
     color: var(--white);
 }
-
+li {
+    list-style: none;
+}
 
 html {
     font-family: system-ui, -apple-system, sans-serif;
@@ -27,7 +29,7 @@ html {
     --radius-pill: 9999px;
     --radius-reg: 2em;
 
-    --transition: 0.4s ease;
+    --transition: 0.4s ease, font-size 0s;
 
     --space-xxxs: .125em;
     --space-xxs: .25em;
@@ -42,16 +44,32 @@ html {
     
     --black: black;
     --balck-subtle: rgb(0 0 0 / 0.75);
+    --balck-faint: rgb(0 0 0 / 0.3);
 
     --subtle: 0.5;
     --visible: 1;
 
-    --glass-shadow: inset 1px -1px 0px 0px rgb(0 0 0 / 40%),
-                    inset -1px 1px 0px 0px rgb(0 0 0 / 40%),
-                    inset 1px 1px 0px 0px rgb(255 255 255 / 40%),
-                    inset -1px -1px 0px 0px rgb(255 255 255 / 20%),
-                    inset 5px 5px 10px 0px rgb(0 0 0 / 50%),
-                    inset -5px -5px 20px 0px rgb(255 255 255 / 10%);
+    --glass-shadow--tool:   inset 1px -1px 0px 0px rgb(0 0 0 / 40%),
+                            inset -1px 1px 0px 0px rgb(0 0 0 / 40%),
+                            inset 1px 1px 0px 0px rgb(255 255 255 / 40%),
+                            inset -1px -1px 0px 0px rgb(255 255 255 / 20%),
+                            inset 5px 5px 10px 0px rgb(0 0 0 / 50%),
+                            inset -5px -5px 20px 0px rgb(255 255 255 / 10%);
+
+    --glass-shadow--anime-card: inset 1px -1px 0px 0px rgb(0 0 0 / 40%),
+                                inset -1px 1px 0px 0px rgb(0 0 0 / 40%),
+                                inset 1px 1px 0px 0px rgb(255 255 255 / 40%),
+                                inset -1px -1px 0px 0px rgb(255 255 255 / 20%),
+                                inset 5px 5px 20px 0px rgb(0 0 0 / 30%),
+                                inset -4px -2px 15px 0px rgb(255 255 255 / 10%);
+                                
+    --glass-shadow--anime-card--info:   inset .5px -.5px 0px 0px rgb(0 0 0 / 30%),
+                                        inset -.5px .5px 0px 0px rgb(0 0 0 / 30%),
+                                        inset .5px .5px 0px 0px rgb(255 255 255 / 40%),
+                                        inset -.5px -.5px 0px 0px rgb(255 255 255 / 20%),
+                                        inset -5px -5px 15px 0px rgb(0 0 0 / 30%),
+                                        inset 5px 5px 20px 0px rgb(255 255 255 / 10%),
+                                        0px 0px 10px 2px var(--balck-faint);
 }
 main {
     width: min(60em, 90%);
@@ -82,7 +100,7 @@ main {
     margin: var(--space-xxs);
     padding: var(--space-xs);
 
-    box-shadow: var(--glass-shadow)
+    box-shadow: var(--glass-shadow--tool);
 }
 .values {
     display: flex;
@@ -104,8 +122,10 @@ main {
 .toolbar hr {
     width: 2px;
     border: none;
-    box-shadow: var(--glass-shadow);
+    box-shadow: var(--glass-shadow--tool);
     margin: var(--space-xs);
+
+    transition: inherit;
 }
 /* === Collapse Behaviour === */
 .tool, .icon, .label {
@@ -119,13 +139,21 @@ main {
 .tool:not(:hover).hasValue:not(.hasInput) .label,
 .tool:not(:hover).hasIcon:not(.hasInput) .label,
 
-.toolbar:not(:hover) .tool:not(.hasInput) .icon {
+.toolbar:not(:hover) .tool:not(.hasInput) .icon,
+
+.toolbar:not(:hover) hr {
     max-width: 0;
     margin-inline: 0;
     padding-inline: 0;
     opacity: .5;
 }
 
+/* transparent behaviour */
+.tool:not(.hasInput):not(:hover) > .icon,
+.tool:not(.hasInput) .label:not(:hover),
+.tool.hasIcon:not(.hasInput) .label:not(:hover) {
+    opacity: .5;
+}
 /* === Grid === */
 .results-grid {
     display: grid;
@@ -134,7 +162,6 @@ main {
     gap: var(--space-s);
 }
 .anime-card {
-    padding: var(--space-xs);
     display: flex;
     position: relative;
     width: 100%;
@@ -144,23 +171,27 @@ main {
     border-radius: var(--radius-reg);
 
     background: linear-gradient(transparent 50%, black);
-    box-shadow: var(--glass-shadow)
+    box-shadow: var(--glass-shadow--anime-card);
+
+    container-type: inline-size;
 }
 .details {
     width: 100%;
     backdrop-filter: var(--blur-reg);
     border-radius: inherit;
+    margin: 4%;
     margin-top: auto;
     padding: var(--space-s);
     padding-bottom: 0; /* No btm padding */
 
-    box-shadow: var(--glass-shadow);
+    box-shadow: var(--glass-shadow--anime-card--info);
     
-    transition: var(--transition);
     overflow: hidden;
+
+    font-size: clamp(.875em, 7cqi, 1.2em);
 }
 .title {
-    margin-bottom: var(--space-s); /* Simulates padding */
+    padding-bottom: var(--space-s); /* Simulates padding */
 }
 .cover {
     inset: 0;
@@ -169,4 +200,14 @@ main {
     height: 100%;
     object-fit: cover;
     z-index: -1;
+}
+.info {
+
+    interpolate-size: allow-keywords;
+    padding-bottom: var(--space-s);
+    transition: var(--transition);
+}
+.details:not(:hover) .info {
+    padding-bottom: 0;
+    height: 0;
 }
