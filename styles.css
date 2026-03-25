@@ -16,10 +16,14 @@ input::placeholder {
 li {
     list-style: none;
 }
+a {
+    color: white;
+    text-decoration: none;
+}
 
 html {
     font-family: system-ui, -apple-system, sans-serif;
-    background: rgb(10, 10, 10);
+    background: rgb(15, 15, 15);
     color: white;
 
 
@@ -35,7 +39,10 @@ html {
     --space-xxs: .25em;
     --space-xs: .5em;
     --space-s: 1em;
+    --space-sm: 1.5em;
     --space-m: 2em;
+    --space-l: 4em;
+    --space-xl: 8em;
 
     
     --white: white;
@@ -71,7 +78,36 @@ html {
                                         inset 5px 5px 20px 0px rgb(255 255 255 / 10%),
                                         0px 0px 10px 2px var(--balck-faint);
 }
-main {
+header {
+    display: flex;
+    justify-content: space-between;
+    border-radius: var(--radius-reg);
+    padding: var(--space-sm);
+    margin-block: var(--space-m) var(--space-l);
+    
+    box-shadow: var(--glass-shadow--anime-card);
+}
+.logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+header ul, header nav {
+    display: flex;
+    gap: var(--space-s);
+}
+footer {
+    display: flex;
+    justify-content: space-between;
+    border-radius: var(--radius-reg) var(--radius-reg) 0 0;
+    padding: var(--space-sm);
+    padding-bottom: var(--space-xl);
+    margin-top: var(--space-xl);
+
+    box-shadow: var(--glass-shadow--tool);
+}
+
+main, header {
     width: min(60em, 90%);
     margin-inline: auto;
 }
