@@ -33,5 +33,12 @@ toolbar.querySelectorAll('.filter').forEach(filter => {
     });
 });
 
+toolbar.addEventListener("click", e => {
+    const value = e.target.closest(".value");
+    const tool = value.closest(".tool")
+    value.remove();
+    updateTool(tool);
+
+})
 
 toolbar.querySelectorAll('.tool').forEach(updateTool);
